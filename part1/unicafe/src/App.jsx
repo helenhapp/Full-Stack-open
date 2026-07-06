@@ -15,24 +15,27 @@ const Controls = ({ countGood, countNeutral, countBad }) => {
 };
 
 const StatisticLine = ({ text, value, extra = "" }) => (
-  <p>
-    {text} {value} {extra}
-  </p>
+  <tr>
+    <td>{text}</td>
+    <td>
+      {value} {extra}
+    </td>
+  </tr>
 );
 
 const Statistics = ({ good, neutral, bad, all, average, positive }) => {
-  // console.log(all)
-  // console.log(all === 0)
   if (all === 0) return <p>No feedback given</p>;
   return (
-    <>
-      <StatisticLine text="good" value={good} />
-      <StatisticLine text="neutral" value={neutral} />
-      <StatisticLine text="bad" value={bad} />
-      <StatisticLine text="all" value={all} />
-      <StatisticLine text="average" value={average} />
-      <StatisticLine text="positive" value={positive} extra="%" />
-    </>
+    <table>
+      <tbody>
+        <StatisticLine text="good" value={good} />
+        <StatisticLine text="neutral" value={neutral} />
+        <StatisticLine text="bad" value={bad} />
+        <StatisticLine text="all" value={all} />
+        <StatisticLine text="average" value={average} />
+        <StatisticLine text="positive" value={positive} extra="%" />
+      </tbody>
+    </table>
   );
 };
 
