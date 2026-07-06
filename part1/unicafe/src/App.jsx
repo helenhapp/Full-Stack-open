@@ -11,6 +11,9 @@ const Counter = ({ text, value, extra = "" }) => (
 );
 
 const Statistics = ({ good, neutral, bad, all, average, positive }) => {
+  // console.log(all)
+  // console.log(all === 0)
+  if (all === 0) return <p>No feedback given</p>;
   return (
     <>
       <Counter text="good" value={good} />
