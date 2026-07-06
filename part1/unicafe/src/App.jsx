@@ -4,9 +4,9 @@ const Heading = ({ text }) => <h2>{text}</h2>;
 
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
 
-const Counter = ({ text, count }) => (
+const Counter = ({ text, count, extra = "" }) => (
   <p>
-    {text} {count}
+    {text} {count} {extra}
   </p>
 );
 
@@ -19,6 +19,10 @@ const App = () => {
   const countNeutral = () => setNeutral(neutral + 1);
   const countBad = () => setBad(bad + 1);
 
+  const all = good + neutral + bad;
+  const average = (good - bad) / all || 0;
+  const positive = (good * 100) / all || 0;
+
   return (
     <div>
       <Heading text="give feedback" />
@@ -30,6 +34,9 @@ const App = () => {
       <Counter text="good" count={good} />
       <Counter text="neutral" count={neutral} />
       <Counter text="bad" count={bad} />
+      <Counter text="all" count={all} />
+      <Counter text="average" count={average} />
+      <Counter text="positive" count={positive} extra="%" />
     </div>
   );
 };
