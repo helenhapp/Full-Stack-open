@@ -4,7 +4,17 @@ const Heading = ({ text }) => <h2>{text}</h2>;
 
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
 
-const Counter = ({ text, value, extra = "" }) => (
+const Controls = ({ countGood, countNeutral, countBad }) => {
+  return (
+    <>
+      <Button onClick={countGood} text="good" />
+      <Button onClick={countNeutral} text="neutral" />
+      <Button onClick={countBad} text="bad" />
+    </>
+  );
+};
+
+const StatisticLine = ({ text, value, extra = "" }) => (
   <p>
     {text} {value} {extra}
   </p>
@@ -16,12 +26,12 @@ const Statistics = ({ good, neutral, bad, all, average, positive }) => {
   if (all === 0) return <p>No feedback given</p>;
   return (
     <>
-      <Counter text="good" value={good} />
-      <Counter text="neutral" value={neutral} />
-      <Counter text="bad" value={bad} />
-      <Counter text="all" value={all} />
-      <Counter text="average" value={average} />
-      <Counter text="positive" value={positive} extra="%" />
+      <StatisticLine text="good" value={good} />
+      <StatisticLine text="neutral" value={neutral} />
+      <StatisticLine text="bad" value={bad} />
+      <StatisticLine text="all" value={all} />
+      <StatisticLine text="average" value={average} />
+      <StatisticLine text="positive" value={positive} extra="%" />
     </>
   );
 };
@@ -42,9 +52,11 @@ const App = () => {
   return (
     <div>
       <Heading text="give feedback" />
-      <Button onClick={countGood} text="good" />
-      <Button onClick={countNeutral} text="neutral" />
-      <Button onClick={countBad} text="bad" />
+      <Controls
+        countGood={countGood}
+        countNeutral={countNeutral}
+        countBad={countBad}
+      />
 
       <Heading text="statistics" />
       <Statistics
