@@ -4,11 +4,24 @@ const Heading = ({ text }) => <h2>{text}</h2>;
 
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
 
-const Counter = ({ text, count, extra = "" }) => (
+const Counter = ({ text, value, extra = "" }) => (
   <p>
-    {text} {count} {extra}
+    {text} {value} {extra}
   </p>
 );
+
+const Statistics = ({ good, neutral, bad, all, average, positive }) => {
+  return (
+    <>
+      <Counter text="good" value={good} />
+      <Counter text="neutral" value={neutral} />
+      <Counter text="bad" value={bad} />
+      <Counter text="all" value={all} />
+      <Counter text="average" value={average} />
+      <Counter text="positive" value={positive} extra="%" />
+    </>
+  );
+};
 
 const App = () => {
   const [good, setGood] = useState(0);
@@ -31,12 +44,14 @@ const App = () => {
       <Button onClick={countBad} text="bad" />
 
       <Heading text="statistics" />
-      <Counter text="good" count={good} />
-      <Counter text="neutral" count={neutral} />
-      <Counter text="bad" count={bad} />
-      <Counter text="all" count={all} />
-      <Counter text="average" count={average} />
-      <Counter text="positive" count={positive} extra="%" />
+      <Statistics
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        all={all}
+        average={average}
+        positive={positive}
+      />
     </div>
   );
 };
