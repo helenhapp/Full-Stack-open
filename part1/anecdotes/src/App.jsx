@@ -1,5 +1,18 @@
 import { useState } from "react";
 
+const Heading = ({ text }) => <h2>{text}</h2>;
+
+const Post = ({ anecdotes, votes, index }) => {
+  return (
+    <div>
+      <p>{anecdotes[index]}</p>
+      <p>has {votes[index]} votes</p>
+    </div>
+  );
+};
+
+const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
+
 const App = () => {
   const anecdotes = [
     "If it hurts, do it more often.",
@@ -12,9 +25,36 @@ const App = () => {
     "The only way to go fast, is to go well.",
   ];
 
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
   const [selected, setSelected] = useState(0);
 
-  return <div>{anecdotes[selected]}</div>;
+  const handleVote = () => {
+    const votesCopy = [...votes];
+    votesCopy[selected] += 1;
+    setVotes(votesCopy);
+  };
+
+  const handleNext = () => {
+    let randomIndex;
+    do {
+      randomIndex = Math.floor(Math.random() * anecdotes.length);
+    } while (randomIndex === selected);
+    setSelected(randomIndex);
+  };
+
+  const maxVotesIndex = votes.indexOf(Math.max(...votes));
+
+  return (
+    <div>
+      <Heading text="Anecdote of the day" />
+      <Post anecdotes={anecdotes} votes={votes} index={selected} />
+      <Button onClick={handleVote} text="vote" />
+      <Button onClick={handleNext} text="next anecdote" />
+
+      <Heading text="Anecdote with most votes" />
+      <Post anecdotes={anecdotes} votes={votes} index={maxVotesIndex} />
+    </div>
+  );
 };
 
 export default App;
