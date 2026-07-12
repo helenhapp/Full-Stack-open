@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
+import Notification from "./components/Notification";
 import phonebook from "./services/phonebook";
 
 const App = () => {
@@ -9,6 +10,9 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [search, setSearch] = useState("");
+
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     phonebook.getAll().then((initialData) => setPersons(initialData));
@@ -25,9 +29,15 @@ const App = () => {
         phonebook
           .updatePerson(existingPerson.id, changedPerson)
           .then((returnedPerson) => {
-            setPersons(persons.map((p) => p.id === returnedPerson.id ? returnedPerson : p));
+            setPersons(
+              persons.map((p) =>
+                p.id === returnedPerson.id ? returnedPerson : p,
+              ),
+            );
             setNewName("");
             setNewNumber("");
+            setSuccessMessage(`Updated ${returnedPerson.name}`);
+            setTimeout(() => setSuccessMessage(null), 3000);
           });
       } else {
         setNewName("");
@@ -41,6 +51,8 @@ const App = () => {
       setPersons(persons.concat(addedPerson));
       setNewName("");
       setNewNumber("");
+      setSuccessMessage(`Added ${addedPerson.name}`);
+      setTimeout(() => setSuccessMessage(null), 3000);
     });
   };
 
@@ -56,13 +68,25 @@ const App = () => {
     if (window.confirm(`Delete ${person.name}?`)) {
       phonebook
         .deletePerson(person.id)
-        .then(() => setPersons(persons.filter((p) => p.id !== person.id)));
+        .then(() => {
+          setPersons(persons.filter((p) => p.id !== person.id));
+        })
+        .catch((error) => {
+          setErrorMessage(
+            `Information of ${person.name} has already been removed from the server`,
+          );
+          setPersons(persons.filter((p) => p.id !== person.id));
+          setTimeout(() => setErrorMessage(null), 3000);
+        });
     }
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={successMessage} type="success" />
+      <Notification message={errorMessage} type="error" />
+
       <Filter filterPersons={filterPersons} />
 
       <h2>add a new</h2>
