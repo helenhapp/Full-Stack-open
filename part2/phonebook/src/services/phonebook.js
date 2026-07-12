@@ -12,7 +12,11 @@ const addPerson = (newPerson) => {
   return request.then((response) => response.data);
 };
 
-const updatePerson = () => {};
+const updatePerson = (id, newInfo) => {
+  const personUrl = `${baseUrl}/${id}`;
+  const request = axios.put(personUrl, newInfo);
+  return request.then((response) => response.data);
+};
 
 const deletePerson = (id) => {
   const personUrl = `${baseUrl}/${id}`;
