@@ -38,6 +38,14 @@ const App = () => {
     person.name.toLowerCase().includes(search),
   );
 
+  const deleteHandler = (person) => () => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+      phonebook
+        .deletePerson(person.id)
+        .then(() => setPersons(persons.filter((p) => p.id !== person.id)));
+    }
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -53,7 +61,7 @@ const App = () => {
       />
 
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} deleteHandler={deleteHandler} />
     </div>
   );
 };
